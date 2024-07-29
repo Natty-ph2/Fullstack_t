@@ -1,116 +1,66 @@
-import { useState } from 'react'
-
-
-const Button = ({handleClick, text}) => {
-  return(
-    
-      <button onClick={handleClick}>{text}</button>
-    
-  )
-}
-
-const Statictics = ({text,good,bad,neutral,total,average,percentage}) => {
-
-  if(total >0 ){
-  return(
-    <div>
-       <h1>{text}</h1>
-       
-       <table>
-        <tbody>
-        <tr>
-          <th>Good</th>
-          <td>{good}</td>
-        </tr>
-
-        <tr>
-          <th>Bad</th>
-          <td>{bad}</td>
-        </tr>
-
-        <tr>
-          <th>Neutral</th>
-          <td>{neutral}</td>
-        </tr>
-
-        <tr>
-          <th>Total</th>
-          <td>{total}</td>
-        </tr>
-
-        <tr>
-          <th>Average</th>
-          <td>{average}</td>
-        </tr>
-
-        <tr>
-          <th>Percentage</th>
-          <td>{percentage}%</td>
-        </tr>
-        </tbody>
-       </table>
-    
-    </div>
-  )
-
-  }
-return(
-  <div>
-    <h3>No feedback given</h3>
-  </div>
-)
-}
+import { useState } from 'react';
 
 const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ];
 
-  const[good, setGood] = useState(0);
-  const[bad, setBad] = useState(0);
-  const[neutral, setNeutral] = useState(0);
+  const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+
+  const getRandomIndex = () => {
+    return Math.floor(Math.random() * anecdotes.length);
+  };
+
+  const handleClick = () => {
+    const randomIndex = getRandomIndex();
+    setSelected(randomIndex);
+  };
+
+  const handleVote = () => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    setVotes(newVotes);
+  };
+
   
-
-
-
+  let mostVotedIndex = 0;
+  let maxVotes = 0;
   
-   const total = good + bad + neutral;
-   const average = good / 3;
-   const percentage = average * 100;
-   const setFeedback = (feedback) => {
-    setGood(feedback)
-   }
+  for (let i = 0; i < votes.length; i++) {
+    if (votes[i] > maxVotes) {
+      maxVotes = votes[i];
+      mostVotedIndex = i;
+    }
+  }
 
-
-  return(
-
+  return (
     <div>
-      <h1>Give Feedback</h1>
-      <Button handleClick = {() => setGood(good+1)} text="Good" />
-      <Button handleClick ={() => setBad(bad+1)} text="Bad" />
-      <Button handleClick = {() => setNeutral(neutral+1)} text="Neutral"/>
-
-      {/* <button onClick={() => setGood(good+1)} >Good</button>
-      <button onClick={() => setBad(bad+1)}>Bad</button>
-      <button onClick={() => setNeutral(neutral+1)}>Neutral</button> */}
-
-
-     <Statictics 
-           text="Statictics"
-           good={good}
-           bad={bad}
-           neutral={neutral}
-           total={total}
-           average={average}
-           percentage ={percentage}
-       />
+      <h1>Anecdote of the Day</h1>
+      <p>{anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
+      <button onClick={handleVote}>vote</button>
+      <button onClick={handleClick}>next anecdote</button>
+     
       
+      <h2>Anecdote with Most Votes</h2>
+      {maxVotes > 0 ? (
+        <>
+          <p>{anecdotes[mostVotedIndex]}</p>
+          <p>has {maxVotes} votes</p>
+        </>
+      ) : (
+        <p>No votes yet</p>
+      )}
     </div>
-  
-  )
-}
-
-
-
-
-
+  );
+};
 
 export default App;
-
