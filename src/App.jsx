@@ -64,7 +64,7 @@ const App = () => {
   const[notes, setNotes] = useState([]);
   const[newNote, setNewNote] = useState('');
   const[showAll, setShowAll] = useState(false);
-  const[erroMessage, setErrorMessage] = useState("some error happpend");
+  // const[erroMessage, setErrorMessage] = useState("some error happpend");
 
 
 useEffect(() => {
@@ -130,10 +130,10 @@ useEffect(() => {
   return (
     <div>
       <h1>Notes</h1>
-      <Notification message={erroMessage} />
+      {/* <Notification message={erroMessage} /> */}
       <div>
       <button onClick={() => setShowAll(!showAll)}>
-        show {showAll? 'important' : 'all'}
+        show {showAll? 'importantNote' : 'all'}
       </button>
       </div>
       
@@ -152,7 +152,7 @@ useEffect(() => {
           value={newNote}
           onChange={handleChange}
         />
-        <button type="submit">Save</button>
+        <button type="submit">Save Note</button>
       </form>
     </div>
   )
